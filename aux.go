@@ -22,20 +22,31 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-var httpVerbs = []string{
-	"GET",
-	"HEAD",
-	"POST",
-	"PUT",
-	"DELETE",
-	"CONNECT",
-	"OPTIONS",
-	"TRACE",
-	"PATCH",
-}
+var (
+	httpVerbs = []string{
+		"GET",
+		"HEAD",
+		"POST",
+		"PUT",
+		"DELETE",
+		"CONNECT",
+		"OPTIONS",
+		"TRACE",
+		"PATCH",
+	}
+
+	securityHeaders = []string{
+		"Strict-Transport-Security",
+		"Content-Security-Policy",
+		"X-Frame-Options",
+		"X-Content-Type-Options",
+		"Referrer-Policy",
+		"Permissions-Policy",
+	}
+)
 
 func banner() {
-	fmt.Printf("Tool to test HTTP verbs response for an URL.\n")
+	fmt.Printf("Tool to test HTTP verbs and headers response for an URL.\n")
 }
 
 func usage() {

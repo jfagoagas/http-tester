@@ -75,6 +75,22 @@ func httpVerbTest(url *string) {
 					fmt.Printf("  - %s: %s\n", header, content)
 				}
 			}
+			checkSecurityHeaders(response)
+		}
+	}
+}
+
+func checkSecurityHeaders(response *http.Response) {
+	fmt.Printf("\n%s\n", "Security Headers:")
+	for _, securityHeader := range securityHeaders {
+		content := ""
+		if value, ok := response.Header[securityHeader]; ok {
+			for _, val := range value {
+				content += val
+			}
+			fmt.Printf("  - %s: %s\n", securityHeader, content)
+		} else {
+			fmt.Printf("  - %s: %s\n", securityHeader, "Missing")
 		}
 	}
 }
