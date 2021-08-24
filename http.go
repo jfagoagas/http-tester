@@ -36,14 +36,16 @@ func createHTTPClient() (client *http.Client) {
 	return client
 }
 
-func createRequest(verb string, url *string, body io.Reader) (request *http.Request) {
+func createRequest(verb string, url *string, body io.Reader, config *Config) (request *http.Request) {
 	request, err := http.NewRequest(verb, *url, nil)
 	if err != nil {
 		log.Error().Err(err)
 	}
-	if *auth != "" {
-		request.Header.Add("Authorization", "Bearer "+*auth)
+
+	if config.Token != "" {
+		request.Header.Add("Authorization", "Bearer "+config.Token)
 	}
+
 	return request
 }
 
@@ -59,11 +61,11 @@ func doHTTPRequest(client *http.Client, request *http.Request) (response *http.R
 	return response
 }
 
-func httpVerbTest(url *string) {
+func httpVerbTest(url *string, config *Config) {
 	client := createHTTPClient()
 	fmt.Printf("URL: %s\n\n", *url)
 	for _, verb := range httpVerbs {
-		request := createRequest(verb, url, nil)
+		request := createRequest(verb, url, nil, config)
 		response := doHTTPRequest(client, request)
 		fmt.Printf("%s\t%d\n", verb, response.StatusCode)
 		if verb == httpVerbs[len(httpVerbs)-1] {

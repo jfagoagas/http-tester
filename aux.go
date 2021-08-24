@@ -20,6 +20,7 @@ import (
 	"fmt"
 
 	"github.com/rs/zerolog/log"
+	"gopkg.in/yaml.v2"
 )
 
 var (
@@ -51,6 +52,14 @@ func banner() {
 
 func usage() {
 	banner()
-	fmt.Printf("./http-verbs-test -u <URL> -h <Bearer Token>\n")
+	fmt.Printf("./http-verbs-test -u <URL> \n")
+	fmt.Printf("If you need an Authorization header with a Bearer JWT,\nyou must input in a config.yml like 'token: <JWT>'\n")
 	log.Fatal()
+}
+
+func (config *Config) readConfiguration() {
+	err := yaml.Unmarshal(yamlConfig, config)
+	if err != nil {
+		log.Fatal().Err(err).Msg("")
+	}
 }

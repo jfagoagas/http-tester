@@ -20,11 +20,20 @@ import (
 	"flag"
 
 	"github.com/rs/zerolog/log"
+
+	_ "embed"
 )
 
+type Config struct {
+	Token string `yaml:"token"`
+}
+
 var (
-	url  = flag.String("u", "", "URL to test responses HTTP status code")
-	auth = flag.String("a", "", "Authorization Bearer Header")
+	url = flag.String("u", "", "URL to test responses HTTP status code")
+	//auth = flag.String("a", "", "Authorization Bearer Header")
+	config Config
+	//go:embed config.yml
+	yamlConfig []byte
 )
 
 func main() {
@@ -34,5 +43,6 @@ func main() {
 		usage()
 		log.Fatal().Msg("No input parameters.")
 	}
-	httpVerbTest(url)
+	config.readConfiguration()
+	httpVerbTest(url, &config)
 }
